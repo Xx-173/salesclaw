@@ -1,0 +1,35 @@
+appId: com.salesclaw.desktop
+productName: SalesClaw
+copyright: Copyright © 2026 SalesClaw contributors
+electronVersion: 39.8.10
+icon: assets/salesclaw-icon.png
+
+directories:
+  output: release
+
+files:
+  - dist/**/*
+  - assets/**/*
+  - package.json
+  - '!**/*.map'
+
+extraMetadata:
+  main: dist/main.cjs
+
+asar: true
+
+mac:
+  category: public.app-category.productivity
+  icon: assets/salesclaw.icns
+  target:
+    - dmg
+    - zip
+
+win:
+  target:
+    - nsis
+
+linux:
+  category: Utility
+  target:
+    - AppImage
