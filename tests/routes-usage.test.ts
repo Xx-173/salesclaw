@@ -198,7 +198,7 @@ describe('/api/usage contract and isolation', () => {
     const body = await stats.json();
     expect(body.summary.runCount).toBe(1);
     expect(body.attributions.agents).toEqual([
-      expect.objectContaining({ key: '__main__', name: 'Miniclaw' }),
+      expect.objectContaining({ key: '__main__', name: 'SalesClaw' }),
     ]);
   });
 
