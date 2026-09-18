@@ -160,6 +160,8 @@ RUN set -eu; \
 # An exact vX.Y.Z tag can be supplied through FEISHU_CLI_VERSION for rollback.
 ARG TARGETARCH
 ARG FEISHU_CLI_VERSION=latest
+# Resolve the release tag first, then download from its immutable URL. This
+# avoids a short-lived 404 from the moving `latest` asset endpoint.
 RUN set -eu && \
     ARCH="${TARGETARCH:-$(dpkg --print-architecture)}" && \
     case "$ARCH" in \
@@ -184,6 +186,9 @@ RUN set -eu && \
     else \
       RELEASE_TAG="$FEISHU_CLI_VERSION"; \
       ARCHIVE="feishu-cli_${RELEASE_TAG}_linux-${ARCH}.tar.gz"; \
+    fi && \
+    if [ "$FEISHU_CLI_VERSION" = latest ]; then \
+      RELEASE_URL="https://github.com/riba2534/feishu-cli/releases/download/${RELEASE_TAG}"; \
     fi && \
     echo "Installing feishu-cli $RELEASE_TAG for $ARCH" && \
     curl -fsSL --retry 3 \
