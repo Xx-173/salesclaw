@@ -40,9 +40,11 @@ describe('Docker image distribution contract', () => {
     expect(workflow).toContain('--tag "${IMAGE_NAME}:latest"');
     expect(workflow).toContain('for attempt in {1..12}');
     expect(workflow).toContain('if [ "$latest_digest" = "$MANIFEST_DIGEST" ]');
-    expect(workflow).toContain('username: ${{ secrets.DOCKERHUB_USERNAME }}');
-    expect(workflow).toContain('password: ${{ secrets.DOCKERHUB_TOKEN }}');
-    expect(workflow).not.toContain(`${['dckr', 'pat'].join('_')}_`);
+    expect(workflow).toContain('registry: ghcr.io');
+    expect(workflow).toContain('username: ${{ github.actor }}');
+    expect(workflow).toContain('password: ${{ secrets.GITHUB_TOKEN }}');
+    expect(workflow).not.toContain('DOCKERHUB_USERNAME');
+    expect(workflow).not.toContain('DOCKERHUB_TOKEN');
     expect(workflow).not.toContain('docker/setup-qemu-action');
 
     const actionUses = [
