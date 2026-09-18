@@ -89,14 +89,14 @@ describe('Agent governance isolation UI', () => {
   });
 
   test('shows Home as fixed to Miniclaw and offers no migration control', async () => {
-    const miniclaw = {
+    const salesclaw = {
       ...baseProfile,
       id: 'miniclaw',
-      name: 'Miniclaw',
+      name: 'SalesClaw',
       is_default: true,
     };
-    await render(miniclaw, {
-      profile: miniclaw,
+    await render(salesclaw, {
+      profile: salesclaw,
       workspaces: [
         {
           jid: 'web:main',
@@ -111,7 +111,7 @@ describe('Agent governance isolation UI', () => {
       channel_mounts: [],
     });
 
-    expect(container?.textContent).toContain('Home · 固定归属 Miniclaw');
+    expect(container?.textContent).toContain('Home · 固定归属 SalesClaw');
     expect(
       container?.querySelector('[aria-label="迁移工作区 Home"]'),
     ).toBeNull();

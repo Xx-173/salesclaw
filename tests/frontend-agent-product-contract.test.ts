@@ -53,9 +53,9 @@ describe('Agent-first frontend product contracts', () => {
     });
   });
 
-  it('shows the legacy built-in Agent name as Miniclaw', () => {
-    expect(getAgentProfileDisplayName('Default Agent')).toBe('Miniclaw');
-    expect(getAgentProfileDisplayName(undefined)).toBe('Miniclaw');
+  it('shows the built-in Agent name as SalesClaw', () => {
+    expect(getAgentProfileDisplayName('Default Agent')).toBe('SalesClaw');
+    expect(getAgentProfileDisplayName(undefined)).toBe('SalesClaw');
     expect(getAgentProfileDisplayName('代码审查员')).toBe('代码审查员');
   });
 
@@ -136,20 +136,20 @@ describe('Agent-first frontend product contracts', () => {
   });
 
   it('keeps the default Miniclaw Agent first and retains its internal home context', () => {
-    const home = workspace('web:main', 'agent-miniclaw', 'Miniclaw');
+    const home = workspace('web:main', 'agent-miniclaw', 'SalesClaw');
     home.is_my_home = true;
 
     const sections = groupWorkspacesByAgent(
       [
         workspace('web:review', 'agent-reviewer', '代码审查员'),
-        workspace('web:project', 'agent-miniclaw', 'Miniclaw'),
+        workspace('web:project', 'agent-miniclaw', 'SalesClaw'),
         home,
       ],
       'agent-miniclaw',
     );
 
     expect(sections.map((section) => section.name)).toEqual([
-      'Miniclaw',
+      'SalesClaw',
       '代码审查员',
     ]);
     expect(sections[0]).toMatchObject({
@@ -159,10 +159,10 @@ describe('Agent-first frontend product contracts', () => {
   });
 
   it('keeps the home context separate from additional Agent workspaces for navigation', () => {
-    const home = workspace('web:main', 'agent-miniclaw', 'Miniclaw');
+    const home = workspace('web:main', 'agent-miniclaw', 'SalesClaw');
     home.is_my_home = true;
     const [section] = groupWorkspacesByAgent(
-      [workspace('web:project', 'agent-miniclaw', 'Miniclaw'), home],
+      [workspace('web:project', 'agent-miniclaw', 'SalesClaw'), home],
       'agent-miniclaw',
     );
 
@@ -173,10 +173,10 @@ describe('Agent-first frontend product contracts', () => {
   });
 
   it('presents the home context as the named main workspace of the primary Agent', () => {
-    const home = workspace('web:main', 'agent-miniclaw', 'Miniclaw');
+    const home = workspace('web:main', 'agent-miniclaw', 'SalesClaw');
     home.is_my_home = true;
     const [section] = groupWorkspacesByAgent(
-      [workspace('web:project', 'agent-miniclaw', 'Miniclaw'), home],
+      [workspace('web:project', 'agent-miniclaw', 'SalesClaw'), home],
       'agent-miniclaw',
     );
 
@@ -186,7 +186,7 @@ describe('Agent-first frontend product contracts', () => {
         name,
       })),
     ).toEqual([
-      { jid: 'web:main', name: 'Miniclaw' },
+      { jid: 'web:main', name: 'SalesClaw' },
       { jid: 'web:project', name: 'web:project' },
     ]);
   });
@@ -194,14 +194,14 @@ describe('Agent-first frontend product contracts', () => {
   it('separates Miniclaw as the primary Agent from custom Agents', () => {
     const sections = groupWorkspacesByAgent(
       [
-        workspace('web:main', 'agent-miniclaw', 'Miniclaw'),
+        workspace('web:main', 'agent-miniclaw', 'SalesClaw'),
         workspace('web:review', 'agent-reviewer', '代码审查员'),
       ],
       'agent-miniclaw',
     );
 
     const partitioned = partitionAgentWorkspaceSections(sections);
-    expect(partitioned.primary?.name).toBe('Miniclaw');
+    expect(partitioned.primary?.name).toBe('SalesClaw');
     expect(partitioned.custom.map((section) => section.name)).toEqual([
       '代码审查员',
     ]);
