@@ -13,7 +13,7 @@ export function AboutSection() {
           SalesClaw
         </h2>
         <p className="text-sm text-muted-foreground">
-          面向销售 SOP 与客户运营的自托管 Agent 工作台
+          面向团队与多种业务场景的自托管 Agent 平台基座
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
           版本 1.0.0 · MIT License

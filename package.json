@@ -1,7 +1,7 @@
 {
   "name": "salesclaw",
   "version": "1.0.0",
-  "description": "SalesClaw: a self-hosted, SOP-governed sales AI agent workspace.",
+  "description": "SalesClaw: a self-hosted, governed AI agent platform for teams and business applications.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

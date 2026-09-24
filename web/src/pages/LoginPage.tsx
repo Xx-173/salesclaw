@@ -198,8 +198,8 @@ export function LoginPage() {
               </h1>
 
               <p className="mt-4 lg:mt-6 text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto lg:mx-0">
-                面向销售 SOP 与客户运营的自托管智能体工作台。
-                在可审计的安全边界内管理工作区、知识、渠道与任务。
+                面向团队与多种业务场景的自托管智能体平台基座。
+                按岗位配置 Agent，在可审计的安全边界内管理工作区、知识、渠道与任务。
               </p>
 
               {/* Stats — hidden on small mobile to save space */}

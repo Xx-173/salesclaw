@@ -1,7 +1,7 @@
 {
   "name": "SalesClaw",
   "short_name": "SalesClaw",
-  "description": "销售 SOP 智能体工作台",
+  "description": "面向团队与多种业务场景的自托管 Agent 平台基座",
   "start_url": "./chat",
   "display": "standalone",
   "display_override": ["standalone"],
