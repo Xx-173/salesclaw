@@ -2242,10 +2242,14 @@ describe('scheduled task workspace/session contract', () => {
         },
       };
     });
-    const retrying = processClaimedTaskRunNotification(retryClaim, deps, 60);
+    const retrying = processClaimedTaskRunNotification(
+      retryClaim,
+      deps,
+      60_000,
+    );
     await new Promise((resolve) => setTimeout(resolve, 100));
     expect(
-      db.claimNextTaskRunNotification('competing-retry-worker', 60),
+      db.claimNextTaskRunNotification('competing-retry-worker', 60_000),
     ).toBeUndefined();
     expect(await retrying).toBe(true);
     expect(deps.storeResultAndNotify).toHaveBeenLastCalledWith(
