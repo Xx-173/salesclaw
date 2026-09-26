@@ -1,11 +1,10 @@
-import type { Model } from '@earendil-works/pi-ai';
 import { getModel } from '@earendil-works/pi-ai/compat';
 import type { ModelRuntime } from '@earendil-works/pi-coding-agent';
 
 export type PiProviderResolution = {
   providerId: string;
   modelId: string;
-  model: Model<any>;
+  model: ReturnType<ModelRuntime['getModel']>;
 };
 
 function splitModelRef(value: string): { providerId: string; modelId: string } {
@@ -52,9 +51,7 @@ export async function resolvePiProvider(
   }
   const split = splitModelRef(rawModel || 'claude-sonnet');
   const custom = input.endpointKind === 'custom' || !!input.baseUrl?.trim();
-  const providerId = custom
-    ? `miniclaw-${split.providerId}`
-    : split.providerId;
+  const providerId = custom ? `miniclaw-${split.providerId}` : split.providerId;
 
   if (custom) {
     if (!input.baseUrl?.trim()) {
@@ -90,7 +87,10 @@ export async function resolvePiProvider(
     (custom
       ? undefined
       : (
-          getModel as unknown as (provider: string, model: string) => Model<any>
+          getModel as unknown as (
+            provider: string,
+            model: string,
+          ) => ReturnType<ModelRuntime['getModel']>
         )(providerId, split.modelId));
   if (!model) {
     throw new Error(
