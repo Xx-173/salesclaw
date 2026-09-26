@@ -14,29 +14,30 @@
 
 ## 路由模块
 
-| 前缀                               | 实现                             | 用途                          |
-| ---------------------------------- | -------------------------------- | ----------------------------- |
-| `/api/auth`                        | `src/routes/auth.ts`             | 初始化、登录、账户、设备      |
-| `/api/groups`                      | `src/routes/groups.ts`           | 工作区兼容模型、消息和环境    |
-| `/api/groups`                      | `src/routes/files.ts`            | 工作区文件                    |
-| `/api/groups`                      | `src/routes/agents.ts`           | Runtime Session 与渠道绑定    |
-| `/api/groups`                      | `src/routes/workspace-config.ts` | 项目 Skills/MCP               |
-| `/api/workspaces`                  | `src/routes/workspaces.ts`       | Agent-first 工作区投影        |
-| `/api/agent-profiles`              | `src/routes/agent-profiles.ts`   | 产品级 Agent                  |
-| `/api/channel-accounts`            | `src/routes/channel-accounts.ts` | 多渠道账号                    |
-| `/api/config`                      | `src/routes/config.ts`           | Provider、系统与兼容渠道配置  |
-| `/api/tasks`                       | `src/routes/tasks.ts`            | 定时任务和运行                |
-| `/api/memory`                      | `src/routes/memory.ts`           | Workspace Memory v2           |
-| `/api/skills`                      | `src/routes/skills.ts`           | 用户 Skills                   |
-| `/api/mcp-servers`                 | `src/routes/mcp-servers.ts`      | 用户/系统 MCP                 |
-| `/api/plugins`                     | `src/routes/plugins.ts`          | Plugin Catalog 与用户启用状态 |
-| `/api/usage`                       | `src/routes/usage.ts`            | Token 用量                    |
-| `/api/billing`                     | `src/routes/billing.ts`          | 订阅、余额和计费管理          |
-| `/api/admin`                       | `src/routes/admin.ts`            | 用户、邀请和审计              |
-| `/api/bug-report`                  | `src/routes/bug-report.ts`       | 脱敏问题报告                  |
-| `/api/browse`                      | `src/routes/browse.ts`           | Host 目录选择                 |
-| `/api`                             | `src/routes/monitor.ts`          | 健康、状态和 Docker 构建      |
-| `/api/messages`、`/api/follow-ups` | `src/web.ts`                     | 消息发送和 Follow-up          |
+| 前缀                               | 实现                             | 用途                           |
+| ---------------------------------- | -------------------------------- | ------------------------------ |
+| `/api/auth`                        | `src/routes/auth.ts`             | 初始化、登录、账户、设备       |
+| `/api/groups`                      | `src/routes/groups.ts`           | 工作区兼容模型、消息和环境     |
+| `/api/groups`                      | `src/routes/files.ts`            | 工作区文件                     |
+| `/api/groups`                      | `src/routes/agents.ts`           | Runtime Session 与渠道绑定     |
+| `/api/groups`                      | `src/routes/workspace-config.ts` | 项目 Skills/MCP                |
+| `/api/workspaces`                  | `src/routes/workspaces.ts`       | Agent-first 工作区投影         |
+| `/api/agent-profiles`              | `src/routes/agent-profiles.ts`   | 产品级 Agent                   |
+| `/api/channel-accounts`            | `src/routes/channel-accounts.ts` | 多渠道账号                     |
+| `/api/commerce`                    | `src/routes/commerce.ts`         | 国内零售店铺、事件与连接器目录 |
+| `/api/config`                      | `src/routes/config.ts`           | Provider、系统与兼容渠道配置   |
+| `/api/tasks`                       | `src/routes/tasks.ts`            | 定时任务和运行                 |
+| `/api/memory`                      | `src/routes/memory.ts`           | Workspace Memory v2            |
+| `/api/skills`                      | `src/routes/skills.ts`           | 用户 Skills                    |
+| `/api/mcp-servers`                 | `src/routes/mcp-servers.ts`      | 用户/系统 MCP                  |
+| `/api/plugins`                     | `src/routes/plugins.ts`          | Plugin Catalog 与用户启用状态  |
+| `/api/usage`                       | `src/routes/usage.ts`            | Token 用量                     |
+| `/api/billing`                     | `src/routes/billing.ts`          | 订阅、余额和计费管理           |
+| `/api/admin`                       | `src/routes/admin.ts`            | 用户、邀请和审计               |
+| `/api/bug-report`                  | `src/routes/bug-report.ts`       | 脱敏问题报告                   |
+| `/api/browse`                      | `src/routes/browse.ts`           | Host 目录选择                  |
+| `/api`                             | `src/routes/monitor.ts`          | 健康、状态和 Docker 构建       |
+| `/api/messages`、`/api/follow-ups` | `src/web.ts`                     | 消息发送和 Follow-up           |
 
 ## 认证
 
@@ -73,6 +74,25 @@ Public：
   `data/extra/` 和任务运行历史
 - `POST /api/groups/:jid/reset-owner`，admin break-glass
 - `GET /api/groups/:jid/messages`
+
+## 国内零售运营
+
+控制面使用登录 Session，并校验店铺所属 Workspace 的访问/修改权限：
+
+- `GET /api/commerce/catalog`，返回生命周期、事件和平台连接器能力目录。
+- `GET|POST /api/commerce/stores`
+- `PATCH|DELETE /api/commerce/stores/:storeId`
+- `POST /api/commerce/stores/:storeId/rotate-ingest-token`
+- `GET /api/commerce/stores/:storeId/overview`
+- `GET /api/commerce/stores/:storeId/events?limit=100`
+
+创建店铺时只返回一次高熵 `ingest_token`，数据库仅保存其 SHA-256 摘要。
+自研软件使用 `Authorization: Bearer <token>` 调用
+`POST /api/commerce/ingest/:storeId/events`。事件按 `(store_id, event_id)`
+幂等，单次请求上限 16 KB，并仅允许规范化的业务引用和聚合指标字段。
+Token 轮换后旧值立即失效。淘宝/天猫、微信小程序、知乎和百度连接器目前
+只出现在能力目录中，未标记为已接入；外部读写能力仍需逐个平台实现并授权。
+
 - `DELETE /api/groups/:jid/messages/:messageId`
 - `GET|PUT /api/groups/:jid/env`
 - `GET|PUT /api/groups/:jid/mcp`，仅兼容旧客户端

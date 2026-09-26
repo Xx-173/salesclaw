@@ -63,7 +63,8 @@ export function AboutSection() {
           <h3 className="text-sm font-medium text-foreground">产品原则</h3>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          在统一的工作区中管理客户运营 Agent、知识与渠道能力，并以最小权限、可审计动作和人工接管为销售自动化场景预留治理边界。
+          在统一的工作区中管理不同岗位的
+          Agent、知识、工具与渠道，并以最小权限、可审计动作和人工审批支持业务流程自动化。
         </p>
       </div>
     </div>
