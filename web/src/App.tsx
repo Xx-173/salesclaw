@@ -43,9 +43,6 @@ if (
 const TasksPage = lazy(() =>
   import('./pages/TasksPage').then((m) => ({ default: m.TasksPage })),
 );
-const CommercePage = lazy(() =>
-  import('./pages/CommercePage').then((m) => ({ default: m.CommercePage })),
-);
 const SettingsPage = lazy(() =>
   import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })),
 );
@@ -168,14 +165,6 @@ const appRoutes = createRoutesFromElements(
         element={
           <Suspense fallback={null}>
             <TasksPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/commerce"
-        element={
-          <Suspense fallback={null}>
-            <CommercePage />
           </Suspense>
         }
       />

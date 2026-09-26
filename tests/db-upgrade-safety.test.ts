@@ -171,7 +171,8 @@ describe('schema version head', () => {
     // one assertion that fails when the head moves, forcing whoever bumps it
     // to confirm the matching migration block — and a test covering it —
     // actually landed. Update the literal in the same commit as the migration.
-    // v70: adds the commerce store/event foundation.
-    expect(db.CURRENT_SCHEMA_VERSION).toBe(70);
+    // v69: adds Agent-level reasoning effort; see
+    // tests/schema-v69-agent-effort.test.ts for migration coverage.
+    expect(db.CURRENT_SCHEMA_VERSION).toBe(69);
   });
 });
